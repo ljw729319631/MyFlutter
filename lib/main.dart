@@ -1,14 +1,24 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter_my_app/HomePage.dart';
+import 'test_bean_entity.dart';
 
 
 void main() => runApp(MyApp());
 
 
 class MyApp extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
+    Future<String> loadString = DefaultAssetBundle.of(context).loadString("data/currency.json");
+    loadString.then((String value){
+      Map map = json.decode(value);
+      var testJson = new TestBeanEntity().fromJson(map);
+      print(testJson.data.content[0].id);
+    });
 
     return new MaterialApp(
       title: 'My APP',
@@ -21,200 +31,200 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyPavlova extends StatelessWidget{
-  Widget iconBuild(IconData icon, String text, String number){
-    return new Container(
-      child: new Column(
-        children: <Widget>[
-          new Icon(icon),
-          new Text(text,style: new TextStyle(color: Colors.black),),
-          new Text(number,style: new TextStyle(color: Colors.blue[200]))
-        ],
-      ),
-    );
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    var textStyle = new TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.w800,
-      fontFamily: 'Roboto',
-      letterSpacing: 0.5,
-      fontSize: 18.0,
-      height: 2.0
-    );
-    var titleSection = new Text(
-      'Strawberry Pavlova',
-      style: textStyle,
-    );
-    var descSection = new Container(
-      margin: EdgeInsets.only(top: 10),
-      child: new Text(
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, ',
-        style: textStyle,
-      ),
-    );
-    var icons = new Icon(
-      Icons.star,
-      color: Colors.black,
-    );
-    var secondBox = new Container(
-      padding: EdgeInsets.all(20.0),
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          new Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              icons,
-              icons,
-              icons,
-              icons,
-              icons,
-            ],
-          ),
-          new Container(
-            margin: EdgeInsets.only(bottom: 10.0),
-            child: new Text(
-              '170 Reviews',
-              style: textStyle,
-            ),
-          )
-        ],
-      ),
-    );
-    var threeBox = new Container(
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          iconBuild(Icons.share,"haha","123"),
-          iconBuild(Icons.search,"xixi","456"),
-          iconBuild(Icons.map,"haha","789"),
-        ],
-      ),
-    );
-    var box = new Container(
-      margin: EdgeInsets.all(10),
-      child: new Column(
-        children: <Widget>[
-          titleSection,
-          descSection,
-          secondBox,
-          threeBox,
-        ],
-      ),
-    );
-    return box;
-  }
-
-}
-class MyAppSection extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    Widget titleSection = new Container(
-      padding: const EdgeInsets.all(32.0),
-      child: new Row(
-        children: [
-          new Expanded(
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                new Container(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: new Text(
-                    'Oeschinen Lake Campground',
-                    style: new TextStyle(
-                      fontSize: 12,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                new Text(
-                  'Kandersteg, Switzerland',
-                  textDirection: TextDirection.ltr,
-                  style: new TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[500],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          new Icon(
-            Icons.star,
-            color: Colors.red[400],
-            size: 20,
-          ),
-          new Text(
-            '41',
-            style: new TextStyle(
-              fontSize: 10,
-              color: Colors.black,
-            ),
-            textDirection: TextDirection.ltr,
-          )
-        ],
-      ),
-    );
-    Column buildButtonColumn(IconData icon, String label){
-      Color color = Theme.of(context).primaryColor;
-
-      return new Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment:MainAxisAlignment.center,
-        children: <Widget>[
-          new Icon(icon,color: color),
-          new Container(
-            margin: const EdgeInsets.only(top: 8.0),
-            child: new Text(
-              label,
-              style: new TextStyle(
-                fontSize: 12.0,
-                fontWeight: FontWeight.w400,
-                color: color,
-              ),
-            ),
-          )
-        ],
-      );
-    }
-    Widget buttonSetion = new Container(
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          buildButtonColumn(Icons.call, 'CALL'),
-          buildButtonColumn(Icons.near_me, 'ROUTE'),
-          buildButtonColumn(Icons.share, 'SHARE'),
-        ],
-      ),
-    );
-    Widget textSection = new Container(
-      padding: const EdgeInsets.all(32.0),
-      child: new Text(
-        '''Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, followed by a half-hour walk through pastures and pine forest, leads you to the lake, which warms to 20 degrees Celsius in the summer. Activities enjoyed here include rowing, and riding the summer toboggan run.''',
-        softWrap: true,
-      ),
-    );
-    Widget imgSection = new Container(
-      child: new Image.asset(
-        'images/lake.jpg',
-        fit: BoxFit.cover,
-        height: 240.0,
-        width: 600.0,
-      ),
-    );
-    return new ListView(
-      children: <Widget>[
-        imgSection,
-        titleSection,
-        buttonSetion,
-        textSection
-      ],
-    );
-  }
-}
+//class MyPavlova extends StatelessWidget{
+//  Widget iconBuild(IconData icon, String text, String number){
+//    return new Container(
+//      child: new Column(
+//        children: <Widget>[
+//          new Icon(icon),
+//          new Text(text,style: new TextStyle(color: Colors.black),),
+//          new Text(number,style: new TextStyle(color: Colors.blue[200]))
+//        ],
+//      ),
+//    );
+//  }
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    var textStyle = new TextStyle(
+//      color: Colors.black,
+//      fontWeight: FontWeight.w800,
+//      fontFamily: 'Roboto',
+//      letterSpacing: 0.5,
+//      fontSize: 18.0,
+//      height: 2.0
+//    );
+//    var titleSection = new Text(
+//      'Strawberry Pavlova',
+//      style: textStyle,
+//    );
+//    var descSection = new Container(
+//      margin: EdgeInsets.only(top: 10),
+//      child: new Text(
+//        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, ',
+//        style: textStyle,
+//      ),
+//    );
+//    var icons = new Icon(
+//      Icons.star,
+//      color: Colors.black,
+//    );
+//    var secondBox = new Container(
+//      padding: EdgeInsets.all(20.0),
+//      child: new Row(
+//        mainAxisAlignment: MainAxisAlignment.center,
+//        children: <Widget>[
+//          new Row(
+//            mainAxisSize: MainAxisSize.min,
+//            children: <Widget>[
+//              icons,
+//              icons,
+//              icons,
+//              icons,
+//              icons,
+//            ],
+//          ),
+//          new Container(
+//            margin: EdgeInsets.only(bottom: 10.0),
+//            child: new Text(
+//              '170 Reviews',
+//              style: textStyle,
+//            ),
+//          )
+//        ],
+//      ),
+//    );
+//    var threeBox = new Container(
+//      child: new Row(
+//        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//        children: <Widget>[
+//          iconBuild(Icons.share,"haha","123"),
+//          iconBuild(Icons.search,"xixi","456"),
+//          iconBuild(Icons.map,"haha","789"),
+//        ],
+//      ),
+//    );
+//    var box = new Container(
+//      margin: EdgeInsets.all(10),
+//      child: new Column(
+//        children: <Widget>[
+//          titleSection,
+//          descSection,
+//          secondBox,
+//          threeBox,
+//        ],
+//      ),
+//    );
+//    return box;
+//  }
+//
+//}
+//class MyAppSection extends StatelessWidget{
+//  @override
+//  Widget build(BuildContext context) {
+//    Widget titleSection = new Container(
+//      padding: const EdgeInsets.all(32.0),
+//      child: new Row(
+//        children: [
+//          new Expanded(
+//            child: new Column(
+//              crossAxisAlignment: CrossAxisAlignment.start,
+//              children: [
+//                new Container(
+//                  padding: const EdgeInsets.only(bottom: 8.0),
+//                  child: new Text(
+//                    'Oeschinen Lake Campground',
+//                    style: new TextStyle(
+//                      fontSize: 12,
+//                      color: Colors.black,
+//                      fontWeight: FontWeight.bold,
+//                    ),
+//                  ),
+//                ),
+//                new Text(
+//                  'Kandersteg, Switzerland',
+//                  textDirection: TextDirection.ltr,
+//                  style: new TextStyle(
+//                    fontSize: 12,
+//                    color: Colors.grey[500],
+//                  ),
+//                ),
+//              ],
+//            ),
+//          ),
+//          new Icon(
+//            Icons.star,
+//            color: Colors.red[400],
+//            size: 20,
+//          ),
+//          new Text(
+//            '41',
+//            style: new TextStyle(
+//              fontSize: 10,
+//              color: Colors.black,
+//            ),
+//            textDirection: TextDirection.ltr,
+//          )
+//        ],
+//      ),
+//    );
+//    Column buildButtonColumn(IconData icon, String label){
+//      Color color = Theme.of(context).primaryColor;
+//
+//      return new Column(
+//        mainAxisSize: MainAxisSize.min,
+//        mainAxisAlignment:MainAxisAlignment.center,
+//        children: <Widget>[
+//          new Icon(icon,color: color),
+//          new Container(
+//            margin: const EdgeInsets.only(top: 8.0),
+//            child: new Text(
+//              label,
+//              style: new TextStyle(
+//                fontSize: 12.0,
+//                fontWeight: FontWeight.w400,
+//                color: color,
+//              ),
+//            ),
+//          )
+//        ],
+//      );
+//    }
+//    Widget buttonSetion = new Container(
+//      child: new Row(
+//        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//        children: <Widget>[
+//          buildButtonColumn(Icons.call, 'CALL'),
+//          buildButtonColumn(Icons.near_me, 'ROUTE'),
+//          buildButtonColumn(Icons.share, 'SHARE'),
+//        ],
+//      ),
+//    );
+//    Widget textSection = new Container(
+//      padding: const EdgeInsets.all(32.0),
+//      child: new Text(
+//        '''Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, followed by a half-hour walk through pastures and pine forest, leads you to the lake, which warms to 20 degrees Celsius in the summer. Activities enjoyed here include rowing, and riding the summer toboggan run.''',
+//        softWrap: true,
+//      ),
+//    );
+//    Widget imgSection = new Container(
+//      child: new Image.asset(
+//        'images/lake.jpg',
+//        fit: BoxFit.cover,
+//        height: 240.0,
+//        width: 600.0,
+//      ),
+//    );
+//    return new ListView(
+//      children: <Widget>[
+//        imgSection,
+//        titleSection,
+//        buttonSetion,
+//        textSection
+//      ],
+//    );
+//  }
+//}
 //class MyApp extends StatelessWidget {
 //  // This widget is the root of your application.
 //  MyApp({this.title});
