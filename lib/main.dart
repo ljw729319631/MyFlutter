@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import 'package:flutter_my_app/MyHomePageState.dart';
+import 'package:flutter_my_app/HomePage.dart';
 
 
 void main() => runApp(MyApp());
@@ -16,13 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue
 
       ),
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text(new WordPair.random().toString()),
-        ),
-          body: new MyHomePageStatePage(title:'ddd'),
-
-      )
+      home: new HomePagePage(),
     );
   }
 }
@@ -115,8 +109,6 @@ class MyPavlova extends StatelessWidget{
   }
 
 }
-
-
 class MyAppSection extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
