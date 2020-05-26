@@ -3,31 +3,64 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter_my_app/HomePage.dart';
+import 'package:flutter_my_app/routes/HomeRoute.dart';
+import 'package:flutter_my_app/routes/LoginRoute.dart';
+import 'package:flutter_stack_trace/flutter_stack_trace.dart';
+import 'package:provider/provider.dart';
+import 'common/Global.dart';
+import 'common/LocaleModel.dart';
+import 'common/ThemeModel.dart';
+import 'common/UserModel.dart';
 import 'test_bean_entity.dart';
+import 'DioPage.dart';
+import 'BatteryPage.dart';
 
 
-void main() => runApp(MyApp());
+void main() => Global.init().then((e) => runApp(MyApp()));
 
 
 class MyApp extends StatelessWidget {
-  
-  @override
-  Widget build(BuildContext context) {
-    Future<String> loadString = DefaultAssetBundle.of(context).loadString("data/currency.json");
+  /*
+    获取Assets中JSON文件中的Json
+   */
+  void _getAssetsJson(BuildContext context){
+    Future<String> loadString = DefaultAssetBundle.of(context).loadString("assets/test_json.json");
     loadString.then((String value){
       Map map = json.decode(value);
       var testJson = new TestBeanEntity().fromJson(map);
-      print(testJson.data.content[0].id);
+      print(testJson.data.content[0].value.toString());
     });
+  }
 
-    return new MaterialApp(
-      title: 'My APP',
-      theme: new ThemeData(
-        primarySwatch: Colors.blue
+  @override
+  Widget build(BuildContext context) {
+    _getAssetsJson(context);
 
-      ),
-      home: new HomePagePage(),
+    return MultiProvider(
+      providers: <SingleChildCloneableWidget>[
+        ChangeNotifierProvider.value(value: ThemeModel()),
+        ChangeNotifierProvider.value(value: UserModel()),
+        ChangeNotifierProvider.value(value: LocaleModel()),
+      ],
+      child: Consumer2<ThemeModel,LocaleModel>(
+        builder: (BuildContext context, themeModel, localeModel, Widget child){
+          return MaterialApp(
+            theme: ThemeData(
+              primarySwatch: themeModel.theme,
+            ),
+            home: HomeRoute(title: 'Home'),
+            locale: localeModel.getLocale(),
+            //注册命名路由表
+            routes: <String,WidgetBuilder>{
+              "login": (context) => LoginRoute(),
+//              "themes":(context) => ThemeChangeRoute(),
+//              "language":(context) => LanguageRoute()
+            },
+          );
+        }
+      )
     );
+
   }
 }
 
